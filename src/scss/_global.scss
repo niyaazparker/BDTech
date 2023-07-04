@@ -1,0 +1,77 @@
+@import "https://fonts.googleapis.com/css?family=Raleway:200";
+body {
+background-color: #ECEFF1;
+color: #37474F;
+font-family: 'Raleway', sans-serif;
+font-weight: 300;
+font-size: 16px;
+}
+h1,
+h2,
+h3 {
+font-weight: 200;
+}
+
+
+b, strong {
+font-weight: bold;
+}
+.favorite-icon.fa-star.far,.favorite-icon.fa-star.fas {
+    color: #fff;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+/* Buttons */
+.btn-action {
+position: absolute;
+left: 0;
+top: 10px;
+background: #607D8B;
+-webkit-border-radius: 50%;
+-moz-border-radius: 50%;
+border-radius: 50%;
+border: 3px solid;
+width: 40px;
+height: 40px;
+line-height: 35px;
+text-align: center;
+color: #fff !important;
+cursor: pointer;
+z-index: 20;
+-webkit-transition: all 0.3s;
+-moz-transition: all 0.3s;
+-ms-transition: all 0.3s;
+-o-transition: all 0.3s;
+transition: all 0.3s;
+    &:hover {
+        background-color: #263238;
+    }
+}
+.btn-close {
+width: 20px;
+height: 20px;
+background: transparent url(https://flaticons.net/icon.php?slug_category=mobile-application&slug_icon=close);
+background-size: 20px 20px;
+background-repeat: no-repeat;
+margin: -0.5rem 0rem -0.5rem auto !important;
+box-sizing: revert;
+}
+
+/* Modal*/
+.modal-header {
+background:#607D8B ;
+color: #fff;
+button.btn-close {
+    color: #fff;
+}
+}
+
+.modal-img {
+margin-right: 15px;
+width: 200px;
+img {
+    object-fit: cover;
+}
+}
