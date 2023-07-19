@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const minifyCSS = require('gulp-clean-css');
 const minifyJS = require('gulp-uglify');
 const rename = require('gulp-rename');
@@ -32,12 +32,12 @@ function minifyJSTask() {
 
 // Watch files for changes
 function watchFiles() {
-  gulp.watch('src/css/*.css', minifyCSSTask);
+  gulp.watch('src/scss/*.scss', gulp.series(compileSassTask, minifyCSSTask));
   gulp.watch('src/js/*.js', minifyJSTask);
 }
 
 // Define build tasks
-const build = gulp.parallel(minifyCSSTask, minifyJSTask);
+const build = gulp.parallel(compileSassTask, minifyCSSTask, minifyJSTask);
 
 // Create default task
 gulp.task('default', gulp.series(build, watchFiles));

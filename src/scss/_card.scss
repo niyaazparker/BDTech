@@ -9,6 +9,11 @@
         height: 350px;
         object-fit: cover;
     }
+    .card-img-top {
+        &:hover {
+            cursor: pointer;
+        }
+    }
     }
     .card-body{
         position: absolute;
@@ -59,4 +64,42 @@
   
     .img-body {
         padding-left: 16px;
+    }
+
+    .card-single {
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        p {
+            color: #fff;
+            position: relative;
+            margin-bottom: 8px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            i {position: relative;top: 0;right: 0;min-width: 15px;}
+        }
+        position: relative;
+        .back-btn {
+            position: absolute;
+            top: 0px;
+            left: 30px;
+            border: none!important;
+            background: 0 0!important;
+            margin: 0;
+            padding: 0;
+            height: unset;
+            width: unset;
+            line-height: unset;
+            display: flex;
+            i.fa-chevron-left {
+                color: #fff;
+            }
+        }
+        h2 {
+            &:before {border: none !important;}
+            &:after {border: none !important;}
+        }
+       
     }

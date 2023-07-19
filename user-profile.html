@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="dist/css/styles.min.css">
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card flex-row justify-content-between">
+            <div class="w-75">
+                <img src="" class="card-img-top rounded-0" alt="Profile Image" id="userProfileImage">
+            </div>
+            <div class="card-body card-single px-4 pt-5 ">
+              <button class="back-btn" onclick="goBack()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+              <h2 class="card-title" id="userName"></h2>
+              <p><i class="fa fa-child" aria-hidden="true"></i> <span id="userInfoAge"></span></p>
+              <p><i class="fa fa-home" aria-hidden="true"></i> <span id="userInfoCity"></span></p>
+              <i id="favoriteIcon" class="favorite-icon fa-star"></i>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+  <script src="dist/js/scripts.min.js"></script>
+
+  <script>
+    
+    function goBack() {
+      window.history.back();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const profileId = params.get('id');
+      if (profileId) {
+        fetchUserInfo(profileId);
+      } else {
+        console.error('No profile ID provided in the URL');
+      }
+    });
+
+    function fetchUserInfo(profileId) {
+      fetch(`https://fa.bdtechnologies.ch/api/v1/profiles/${profileId}`)
+        .then(response => response.json())
+        .then(data => displayUserInfo(data))
+        .catch(error => console.error(error));
+    }
+
+    function displayUserInfo(userInfo) {
+    const userName = document.getElementById('userName');
+    const userInfoAge = document.getElementById('userInfoAge');
+    const userInfoCity = document.getElementById('userInfoCity');
+    const userProfileImage = document.getElementById('userProfileImage');
+    const favoriteIcon = document.getElementById('favoriteIcon');
+    const relationshipStatus = userInfo.relationship_status;
+
+    userName.textContent = userInfo.name;
+    userInfoAge.textContent = userInfo.age;
+    userInfoCity.textContent = userInfo.city;
+    userProfileImage.setAttribute('src', userInfo.avatar);
+
+    // Display relationship status
+  const relationshipStatusElement = document.createElement('p');
+  relationshipStatusElement.classList.add('position-absolute' ,'bottom', 'mb-3');
+  relationshipStatusElement.innerHTML = `<i class="fa fa-users" aria-hidden="true"></i>
+ ${relationshipStatus}`;
+  const cardBody = document.querySelector('.card-body');
+  cardBody.appendChild(relationshipStatusElement);
+
+   // Set favorite icon and status
+   favoriteIcon.setAttribute('data-profile-id', userInfo.id);
+    updateFavoriteStatus(userInfo.id);
+    
+    // Add event listener for favorite icon click
+    favoriteIcon.addEventListener('click', toggleFavorite);
+  }
+  
+  async function updateFavoriteStatus(profileId) {
+    const favorites = await fetchFavorites();
+    const isFavorite = favorites.includes(profileId);
+    const favoriteIcon = document.getElementById('favoriteIcon');
+    
+    favoriteIcon.classList.remove('far', 'fas');
+    if (isFavorite) {
+      favoriteIcon.classList.add('fas');
+    } else {
+      favoriteIcon.classList.add('far');
+    }
+  }
+  
+  async function toggleFavorite(event) {
+    const profileId = event.target.getAttribute('data-profile-id');
+    
+    try {
+      // Check if the profile is already in favorites
+      const favorites = await fetchFavorites();
+      const isFavorite = favorites.includes(profileId);
+      
+      let updatedFavorites;
+      
+      if (isFavorite) {
+        // Remove from favorites
+        await removeFavorite(profileId);
+        updatedFavorites = favorites.filter(id => id !== profileId);
+      } else {
+        // Add to favorites
+        await addFavorite(profileId);
+        updatedFavorites = [...favorites, profileId];
+      }
+      
+      // Update the favorite icon class
+      event.target.classList.toggle('fas');
+      event.target.classList.toggle('far');
+      
+      // Update the favorites array in the fetchFavorites function
+      fetchFavorites.favorites = updatedFavorites;
+    } catch (error) {
+      console.error(error);
+      if (error.response) {
+        console.error('API Error:', error.response);
+      }
+    }
+  }
+  </script>
+</body>
+</html>

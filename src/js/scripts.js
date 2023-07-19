@@ -168,13 +168,18 @@ function displayUserInfo(userInfo) {
     fetchUserProfiles();
   });
 
-  // Event delegation for card clicks
-  document.addEventListener('click', event => {
-    if (event.target.classList.contains('card') || event.target.classList.contains('btn-action')) {
-      const profileId = event.target.closest('.card').querySelector('.favorite-icon').getAttribute('data-profile-id');
-      fetchUserInfo(profileId);
-    }
-  });
+// Event delegation for card clicks
+document.addEventListener('click', event => {
+  if (event.target.classList.contains('card') || event.target.classList.contains('btn-action') || event.target.classList.contains('card-img-top')) {
+    const profileId = event.target.closest('.card').querySelector('.favorite-icon').getAttribute('data-profile-id');
+    navigateToUserProfile(profileId);
+  }
+});
+
+// Function to navigate to the user-profile.html page with the profile ID as a query parameter
+function navigateToUserProfile(profileId) {
+  window.location.href = `user-profile.html?id=${profileId}`;
+}
 
   // Event listener for toggle favorite button
   document.addEventListener('click', event => {
